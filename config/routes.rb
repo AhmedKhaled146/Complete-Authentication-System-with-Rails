@@ -1,11 +1,20 @@
 Rails.application.routes.draw do
+  get ":id", to: 'current_user#show'
+  put "users/:id", to: "current_user#update"
+  put "users/:id/update_password", to: "current_user#change_password"
+
+  get 'password/edit', to: 'passwords#edit', as: :edit_password
+
+  post "password/forgot", to: "passwords#forgot_password"
+  post "password/reset", to: "passwords#reset_password"
+
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
-    registration: 'signup'
+    registration: 'signup',
   }, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
   }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
