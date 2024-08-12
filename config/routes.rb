@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   put "users/:id", to: "current_user#update"
   put "users/:id/update_password", to: "current_user#change_password"
 
+  # Profile Pic Upload & Edit
+  patch "users/:id/upload_profile_picture", to: "current_user#upload_profile_picture"
+  patch "users/:id/update_profile_picture", to: "current_user#update_profile_picture"
+
   get 'password/edit', to: 'passwords#edit', as: :edit_password
 
   post "password/forgot", to: "passwords#forgot_password"

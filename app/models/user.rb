@@ -1,8 +1,7 @@
 class User < ApplicationRecord
+  has_one_attached :profile_picture
   include Devise::JWT::RevocationStrategies::JTIMatcher
-
   devise :database_authenticatable, :registerable, :recoverable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
-
 
   def generate_password_token!
     self.reset_password_token = generate_token

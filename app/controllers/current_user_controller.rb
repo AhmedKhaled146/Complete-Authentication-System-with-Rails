@@ -1,6 +1,6 @@
 class CurrentUserController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_user, only: :update
+  before_action :set_user, only: [:update_profile_picture, :upload_profile_picture]
 
   def show
     if params[:id].to_i == current_user.id
@@ -38,6 +38,24 @@ class CurrentUserController < ApplicationController
     end
   end
 
+
+  def upload_profile_picture
+    if @user.update(profile_picture_params)
+      render json: { message: 'Profile picture uploaded successfully.', user: @user }, status: :ok
+    else
+      render json: { error: 'Failed to upload profile picture.', details: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update_profile_picture
+    if @user.update(profile_picture_params)
+      render json: { message: 'Profile picture updated successfully.', user: @user }, status: :ok
+    else
+      render json: { error: 'Failed to update profile picture.', details: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+
   private
 
   def user_params
@@ -48,7 +66,12 @@ class CurrentUserController < ApplicationController
     params.permit(:password, :password_confirmation)
   end
 
-  # def set_user
-  #   @user = User.find(params[:id])
-  # end
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def profile_picture_params
+    params.require(:user).permit(:profile_picture)
+  end
+
 end
